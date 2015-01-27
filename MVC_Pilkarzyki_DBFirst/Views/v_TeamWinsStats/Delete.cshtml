@@ -1,0 +1,56 @@
+﻿@model MVC_Pilkarzyki_DBFirst.Models.v_TeamWinsStats
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>v_TeamWinsStats</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.WinningTeamName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WinningTeamName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WinsCount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WinsCount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PlayedGamesCount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PlayedGamesCount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PercentageOfWins)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PercentageOfWins)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

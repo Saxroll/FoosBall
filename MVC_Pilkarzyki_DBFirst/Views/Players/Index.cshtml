@@ -1,0 +1,40 @@
+﻿@model IEnumerable<MVC_Pilkarzyki_DBFirst.Models.Players>
+
+@{
+    ViewBag.Title = "Lista graczy";
+}
+
+<h1>Lista graczy</h1>
+<br />
+@*<p>
+        @Html.ActionLink("Utwórz nowego gracza", "Create")
+    </p>*@
+<p><a class="btn btn-default" href="~/Players/Create"> Utwórz nowego gracza </a></p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nickname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModifiedDate)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nickname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ModifiedDate)
+        </td>
+        <td>
+            @Html.ActionLink("Edytuj", "Edit", new { id=item.PlayerID }) |
+            @Html.ActionLink("Szczegóły", "Details", new { id=item.PlayerID }) |
+            @Html.ActionLink("Usuń", "Delete", new { id=item.PlayerID })
+        </td>
+    </tr>
+}
+
+</table>

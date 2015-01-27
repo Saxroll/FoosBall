@@ -1,0 +1,363 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="FussballModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Players">
+          <Key>
+            <PropertyRef Name="PlayerID" />
+          </Key>
+          <Property Name="PlayerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nickname" Type="varchar" MaxLength="100" />
+          <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Scores">
+          <Key>
+            <PropertyRef Name="ScoreID" />
+          </Key>
+          <Property Name="ScoreID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstTeamID" Type="int" Nullable="false" />
+          <Property Name="SecondTeamID" Type="int" Nullable="false" />
+          <Property Name="FirstTeamScore" Type="int" Nullable="false" />
+          <Property Name="SecondTeamScore" Type="int" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Teams">
+          <Key>
+            <PropertyRef Name="TeamID" />
+          </Key>
+          <Property Name="TeamID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GoalKeeperID" Type="int" Nullable="false" />
+          <Property Name="AttackerID" Type="int" Nullable="false" />
+          <Property Name="TeamName" Type="varchar" MaxLength="100" />
+          <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Fussball.dbo.v_PlayerWinsStats' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="v_PlayerWinsStats">
+          <Key>
+            <PropertyRef Name="PlayerID" />
+          </Key>
+          <Property Name="PlayerID" Type="int" Nullable="false" />
+          <Property Name="WinnerName" Type="varchar" MaxLength="100" />
+          <Property Name="WinsCount" Type="int" />
+          <Property Name="GamesPlayed" Type="int" />
+          <Property Name="WinsPercentage" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Fussball.dbo.v_TeamWinsStats' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="v_TeamWinsStats">
+          <Key>
+            <PropertyRef Name="TeamID" />
+          </Key>
+          <Property Name="TeamID" Type="int" Nullable="false" />
+          <Property Name="WinningTeamName" Type="varchar" MaxLength="100" />
+          <Property Name="WinsCount" Type="int" />
+          <Property Name="PlayedGamesCount" Type="int" />
+          <Property Name="PercentageOfWins" Type="int" />
+        </EntityType>
+        <Association Name="FK_Scores_Teams">
+          <End Role="Teams" Type="Self.Teams" Multiplicity="1" />
+          <End Role="Scores" Type="Self.Scores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teams">
+              <PropertyRef Name="TeamID" />
+            </Principal>
+            <Dependent Role="Scores">
+              <PropertyRef Name="FirstTeamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Scores_Teams1">
+          <End Role="Teams" Type="Self.Teams" Multiplicity="1" />
+          <End Role="Scores" Type="Self.Scores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teams">
+              <PropertyRef Name="TeamID" />
+            </Principal>
+            <Dependent Role="Scores">
+              <PropertyRef Name="SecondTeamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Teams_Players">
+          <End Role="Players" Type="Self.Players" Multiplicity="1" />
+          <End Role="Teams" Type="Self.Teams" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="PlayerID" />
+            </Principal>
+            <Dependent Role="Teams">
+              <PropertyRef Name="GoalKeeperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Teams_Players1">
+          <End Role="Players" Type="Self.Players" Multiplicity="1" />
+          <End Role="Teams" Type="Self.Teams" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="PlayerID" />
+            </Principal>
+            <Dependent Role="Teams">
+              <PropertyRef Name="AttackerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FussballModelStoreContainer">
+          <EntitySet Name="Players" EntityType="Self.Players" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Scores" EntityType="Self.Scores" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Teams" EntityType="Self.Teams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="v_PlayerWinsStats" EntityType="Self.v_PlayerWinsStats" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [v_PlayerWinsStats].[PlayerID] AS [PlayerID], 
+    [v_PlayerWinsStats].[WinnerName] AS [WinnerName], 
+    [v_PlayerWinsStats].[WinsCount] AS [WinsCount], 
+    [v_PlayerWinsStats].[GamesPlayed] AS [GamesPlayed], 
+    [v_PlayerWinsStats].[WinsPercentage] AS [WinsPercentage]
+    FROM [dbo].[v_PlayerWinsStats] AS [v_PlayerWinsStats]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="v_TeamWinsStats" EntityType="Self.v_TeamWinsStats" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [v_TeamWinsStats].[TeamID] AS [TeamID], 
+    [v_TeamWinsStats].[WinningTeamName] AS [WinningTeamName], 
+    [v_TeamWinsStats].[WinsCount] AS [WinsCount], 
+    [v_TeamWinsStats].[PlayedGamesCount] AS [PlayedGamesCount], 
+    [v_TeamWinsStats].[PercentageOfWins] AS [PercentageOfWins]
+    FROM [dbo].[v_TeamWinsStats] AS [v_TeamWinsStats]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Scores_Teams" Association="Self.FK_Scores_Teams">
+            <End Role="Teams" EntitySet="Teams" />
+            <End Role="Scores" EntitySet="Scores" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Scores_Teams1" Association="Self.FK_Scores_Teams1">
+            <End Role="Teams" EntitySet="Teams" />
+            <End Role="Scores" EntitySet="Scores" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Teams_Players" Association="Self.FK_Teams_Players">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Teams" EntitySet="Teams" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Teams_Players1" Association="Self.FK_Teams_Players1">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Teams" EntitySet="Teams" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FussballModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Players">
+          <Key>
+            <PropertyRef Name="PlayerID" />
+          </Key>
+          <Property Name="PlayerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nickname" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Teams" Relationship="Self.FK_Teams_Players" FromRole="Players" ToRole="Teams" />
+          <NavigationProperty Name="Teams1" Relationship="Self.FK_Teams_Players1" FromRole="Players" ToRole="Teams" />
+        </EntityType>
+        <EntityType Name="Scores">
+          <Key>
+            <PropertyRef Name="ScoreID" />
+          </Key>
+          <Property Name="ScoreID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstTeamID" Type="Int32" Nullable="false" />
+          <Property Name="SecondTeamID" Type="Int32" Nullable="false" />
+          <Property Name="FirstTeamScore" Type="Int32" Nullable="false" />
+          <Property Name="SecondTeamScore" Type="Int32" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Teams" Relationship="Self.FK_Scores_Teams" FromRole="Scores" ToRole="Teams" />
+          <NavigationProperty Name="Teams1" Relationship="Self.FK_Scores_Teams1" FromRole="Scores" ToRole="Teams" />
+        </EntityType>
+        <EntityType Name="Teams">
+          <Key>
+            <PropertyRef Name="TeamID" />
+          </Key>
+          <Property Name="TeamID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GoalKeeperID" Type="Int32" Nullable="false" />
+          <Property Name="AttackerID" Type="Int32" Nullable="false" />
+          <Property Name="TeamName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Players" Relationship="Self.FK_Teams_Players" FromRole="Teams" ToRole="Players" />
+          <NavigationProperty Name="Players1" Relationship="Self.FK_Teams_Players1" FromRole="Teams" ToRole="Players" />
+          <NavigationProperty Name="Scores" Relationship="Self.FK_Scores_Teams" FromRole="Teams" ToRole="Scores" />
+          <NavigationProperty Name="Scores1" Relationship="Self.FK_Scores_Teams1" FromRole="Teams" ToRole="Scores" />
+        </EntityType>
+        <Association Name="FK_Teams_Players">
+          <End Role="Players" Type="Self.Players" Multiplicity="1" />
+          <End Role="Teams" Type="Self.Teams" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="PlayerID" />
+            </Principal>
+            <Dependent Role="Teams">
+              <PropertyRef Name="GoalKeeperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Teams_Players1">
+          <End Role="Players" Type="Self.Players" Multiplicity="1" />
+          <End Role="Teams" Type="Self.Teams" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="PlayerID" />
+            </Principal>
+            <Dependent Role="Teams">
+              <PropertyRef Name="AttackerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Scores_Teams">
+          <End Role="Teams" Type="Self.Teams" Multiplicity="1" />
+          <End Role="Scores" Type="Self.Scores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teams">
+              <PropertyRef Name="TeamID" />
+            </Principal>
+            <Dependent Role="Scores">
+              <PropertyRef Name="FirstTeamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Scores_Teams1">
+          <End Role="Teams" Type="Self.Teams" Multiplicity="1" />
+          <End Role="Scores" Type="Self.Scores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teams">
+              <PropertyRef Name="TeamID" />
+            </Principal>
+            <Dependent Role="Scores">
+              <PropertyRef Name="SecondTeamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FussballEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Players" EntityType="Self.Players" />
+          <EntitySet Name="Scores" EntityType="Self.Scores" />
+          <EntitySet Name="Teams" EntityType="Self.Teams" />
+          <AssociationSet Name="FK_Teams_Players" Association="Self.FK_Teams_Players">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Teams" EntitySet="Teams" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Teams_Players1" Association="Self.FK_Teams_Players1">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Teams" EntitySet="Teams" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Scores_Teams" Association="Self.FK_Scores_Teams">
+            <End Role="Teams" EntitySet="Teams" />
+            <End Role="Scores" EntitySet="Scores" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Scores_Teams1" Association="Self.FK_Scores_Teams1">
+            <End Role="Teams" EntitySet="Teams" />
+            <End Role="Scores" EntitySet="Scores" />
+          </AssociationSet>
+          <EntitySet Name="v_TeamWinsStats" EntityType="FussballModel.v_TeamWinsStats" />
+          <EntitySet Name="v_PlayerWinsStats" EntityType="FussballModel.v_PlayerWinsStats" />
+        </EntityContainer>
+        <EntityType Name="v_TeamWinsStats">
+          <Key>
+            <PropertyRef Name="TeamID" />
+          </Key>
+          <Property Name="TeamID" Type="Int32" Nullable="false" />
+          <Property Name="WinningTeamName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="WinsCount" Type="Int32" />
+          <Property Name="PlayedGamesCount" Type="Int32" />
+          <Property Name="PercentageOfWins" Type="Int32" />
+        </EntityType>
+        <EntityType Name="v_PlayerWinsStats">
+          <Key>
+            <PropertyRef Name="PlayerID" />
+          </Key>
+          <Property Name="PlayerID" Type="Int32" Nullable="false" />
+          <Property Name="WinnerName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="WinsCount" Type="Int32" />
+          <Property Name="GamesPlayed" Type="Int32" />
+          <Property Name="WinsPercentage" Type="Int32" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FussballModelStoreContainer" CdmEntityContainer="FussballEntities">
+          <EntitySetMapping Name="Players">
+            <EntityTypeMapping TypeName="FussballModel.Players">
+              <MappingFragment StoreEntitySet="Players">
+                <ScalarProperty Name="PlayerID" ColumnName="PlayerID" />
+                <ScalarProperty Name="Nickname" ColumnName="Nickname" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Scores">
+            <EntityTypeMapping TypeName="FussballModel.Scores">
+              <MappingFragment StoreEntitySet="Scores">
+                <ScalarProperty Name="ScoreID" ColumnName="ScoreID" />
+                <ScalarProperty Name="FirstTeamID" ColumnName="FirstTeamID" />
+                <ScalarProperty Name="SecondTeamID" ColumnName="SecondTeamID" />
+                <ScalarProperty Name="FirstTeamScore" ColumnName="FirstTeamScore" />
+                <ScalarProperty Name="SecondTeamScore" ColumnName="SecondTeamScore" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Teams">
+            <EntityTypeMapping TypeName="FussballModel.Teams">
+              <MappingFragment StoreEntitySet="Teams">
+                <ScalarProperty Name="TeamID" ColumnName="TeamID" />
+                <ScalarProperty Name="GoalKeeperID" ColumnName="GoalKeeperID" />
+                <ScalarProperty Name="AttackerID" ColumnName="AttackerID" />
+                <ScalarProperty Name="TeamName" ColumnName="TeamName" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="v_TeamWinsStats">
+            <EntityTypeMapping TypeName="FussballModel.v_TeamWinsStats">
+              <MappingFragment StoreEntitySet="v_TeamWinsStats">
+                <ScalarProperty Name="PercentageOfWins" ColumnName="PercentageOfWins" />
+                <ScalarProperty Name="PlayedGamesCount" ColumnName="PlayedGamesCount" />
+                <ScalarProperty Name="WinsCount" ColumnName="WinsCount" />
+                <ScalarProperty Name="WinningTeamName" ColumnName="WinningTeamName" />
+                <ScalarProperty Name="TeamID" ColumnName="TeamID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="v_PlayerWinsStats">
+            <EntityTypeMapping TypeName="FussballModel.v_PlayerWinsStats">
+              <MappingFragment StoreEntitySet="v_PlayerWinsStats">
+                <ScalarProperty Name="WinsPercentage" ColumnName="WinsPercentage" />
+                <ScalarProperty Name="GamesPlayed" ColumnName="GamesPlayed" />
+                <ScalarProperty Name="WinsCount" ColumnName="WinsCount" />
+                <ScalarProperty Name="WinnerName" ColumnName="WinnerName" />
+                <ScalarProperty Name="PlayerID" ColumnName="PlayerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

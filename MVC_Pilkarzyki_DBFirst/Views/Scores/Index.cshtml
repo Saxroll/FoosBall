@@ -1,0 +1,71 @@
+﻿@model IEnumerable<MVC_Pilkarzyki_DBFirst.Models.Scores>
+
+@{
+    ViewBag.Title = "Lista wyników";
+}
+
+<h2>Wyniki</h2>
+
+@*<p>
+    @Html.ActionLink("Create New", "Create")
+</p>*@
+<p><a class="btn btn-default" href="~/Scores/Create"> Dodaj wynik! </a></p>
+<table class="table">
+    <tr>
+        <th>
+            Kto z kim
+        </th>
+        <th>
+            Wynik
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModifiedDate)
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.FirstTeamScore)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SecondTeamScore)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Teams.TeamName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Teams1.TeamName)
+        </th>*@
+        
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Teams.TeamName) <b>VS</b> @Html.DisplayFor(modelItem => item.Teams1.TeamName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FirstTeamScore) <b>:</b> @Html.DisplayFor(modelItem => item.SecondTeamScore)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ModifiedDate)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.FirstTeamScore)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SecondTeamScore)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Teams.TeamName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Teams1.TeamName)
+        </td>*@
+        <td>
+            @Html.ActionLink("Edytuj", "Edit", new { id=item.ScoreID }) |
+            @Html.ActionLink("Szczegóły", "Details", new { id=item.ScoreID }) |
+            @Html.ActionLink("Usuń", "Delete", new { id=item.ScoreID })
+        </td>
+    </tr>
+}
+
+</table>

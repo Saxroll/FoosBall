@@ -1,0 +1,49 @@
+﻿@model IEnumerable<MVC_Pilkarzyki_DBFirst.Models.v_PlayerWinsStats>
+
+@{
+    ViewBag.Title = "Statystyki graczy";
+}
+
+<h2>Statystyki graczy</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.WinnerName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.WinsCount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GamesPlayed)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.WinsPercentage)
+        </th>
+        @*<th></th>*@
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.WinnerName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.WinsCount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GamesPlayed)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.WinsPercentage)
+        </td>
+        @*<td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.PlayerID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.PlayerID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.PlayerID })
+        </td>*@
+    </tr>
+}
+
+</table>

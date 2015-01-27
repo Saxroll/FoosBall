@@ -1,0 +1,50 @@
+﻿@model MVC_Pilkarzyki_DBFirst.Models.v_TeamWinsStats
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>v_TeamWinsStats</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.WinningTeamName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WinningTeamName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WinsCount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WinsCount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PlayedGamesCount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PlayedGamesCount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PercentageOfWins)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PercentageOfWins)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.TeamID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
